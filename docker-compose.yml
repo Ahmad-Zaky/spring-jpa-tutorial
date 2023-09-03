@@ -16,7 +16,7 @@ services:
       - "3313:3306"
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
-      MYSQL_DATABASE: jadwalh
+      MYSQL_DATABASE: jpa_tutorial
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     networks:
       - app-network
