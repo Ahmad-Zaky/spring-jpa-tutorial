@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: mysql-jpa-tutorial
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: .docker/mysql/Dockerfile
+    volumes:
+      - .docker/mysql/init:/docker-entrypoint-initdb.d
+      - .docker/mysql/my.conf:/etc/mysql/mysqld.cnf
+    mem_limit: 1024m
+    mem_reservation: 512M
+    ports:
+      - "3313:3306"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: jadwalh
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - app-network
+  phpmyadmin:
+    container_name: phpmyadmin-jpa-tutorial
+    build:
+      context: .
+      dockerfile: .docker/phpmyadmin/Dockerfile
+    links:
+      - mysql:mysql
+    mem_limit: 1024m
+    mem_reservation: 512M
+    ports:
+      - 8003:80
+    environment:
+      USER: root
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: "bridge"
