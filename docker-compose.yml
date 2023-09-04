@@ -8,7 +8,6 @@ services:
       context: .
       dockerfile: .docker/mysql/Dockerfile
     volumes:
-      - .docker/mysql/init:/docker-entrypoint-initdb.d
       - .docker/mysql/my.conf:/etc/mysql/mysqld.cnf
     mem_limit: 1024m
     mem_reservation: 512M
